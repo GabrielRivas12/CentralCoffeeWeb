@@ -1,0 +1,135 @@
+{% extends "base/BaseAdmin.html" %} {% block body %}
+<div class="container login-container my-5">
+  <div class="row w-100">
+    <div class="col-md-8 mx-auto">
+      <div class="card login-card shadow">
+        <div class="row g-0">
+          <!-- Panel izquierdo con logo -->
+          <div class="col-md-6 login-left d-flex flex-column justify-content-center align-items-center text-white p-4"
+            style="background-color: #f1a89b">
+            <!-- Logo -->
+            <div class="logo-container mb-3">
+              <img src="
+                            
+                            {{ url_for('static', filename='img/logo.png') }}
+                            
+                            
+                            " alt="Cerne Logo" class="img-fluid" style="max-width: 150px" />
+            </div>
+
+            <!-- Texto de bienvenida -->
+            <h1 class="welcome-text">¡Únete a Cerne!</h1>
+            <p class="tagline">Donde comienza tu historia con el café</p>
+          </div>
+
+          <!-- Panel derecho: Formulario de registro -->
+          <div class="col-md-6 login-right p-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            <div class="brand text-left mb-4" style="color: #000; font-size: 32px; font-weight: bold">
+              Crea tu cuenta
+            </div>
+
+            <form action="{{ url_for('login.registro') }}" method="POST">
+              <div class="mb-3">
+                <label for="name" class="form-label">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Tu nombre completo"
+                  required />
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label">Correo</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="usuario@correo.com"
+                  required />
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="********"
+                  required />
+              </div>
+
+              <div class="mb-3">
+                <label for="confirmar" class="form-label">Confirmar contraseña</label>
+                <input type="password" class="form-control" id="confirmar" name="confirmar" placeholder="********"
+                  required />
+              </div>
+
+              <!-- rol fijo como "Comprador" -->
+              <input type="hidden" name="rol" value="Comprador">
+
+              <div class="mb-3">
+                <div class="alert alert-info" role="alert">
+                  <strong>Nota:</strong> Tu cuenta se creará automáticamente como <strong>Comprador</strong>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-login mb-3" style="width: auto; padding: 0.5rem 1rem; float: right">
+                Crear cuenta
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .login-card {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .login-left {
+    text-align: center;
+    background-color: #f1a89b !important;
+  }
+
+  .logo-container img {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .login-left .welcome-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .login-left .tagline {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .login-right .brand {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ed6d4a;
+  }
+
+  .btn-login {
+    background-color: #ed6d4a !important;
+    color: #fff;
+    border: none;
+  }
+
+  .btn-login:hover {
+    opacity: 0.9;
+  }
+
+  .alert-info {
+    background-color: #e7f3ff;
+    border-color: #b3d9ff;
+    color: #0066cc;
+  }
+</style>
+{% endblock %}
