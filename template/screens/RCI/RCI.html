@@ -1,0 +1,390 @@
+{% extends "base/BaseAdmin.html" %}
+
+{% block Titulo %}
+IA de Reconocimiento de Imágenes
+{% endblock Titulo %}
+
+{% block body %}
+<style>
+    .image-ai-container { 
+        max-width: 1000px; 
+        margin: 30px auto; 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
+        padding: 20px; 
+    }
+    .upload-container { 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        margin-bottom: 20px; 
+        width: 100%;
+    }
+    .upload-container label { 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        width: 70%; 
+        height: 120px; 
+        border: 2px dashed #ccc; 
+        border-radius: 10px; 
+        cursor: pointer; 
+        font-size: 16px; 
+        color: #888; 
+        transition: background-color 0.2s, border-color 0.2s; 
+    }
+    .upload-container label:hover { 
+        background-color: #f0f0f0; 
+        border-color: #ED6D4A; 
+    }
+    .upload-container input[type="file"] { 
+        display: none; 
+    }
+    .image-preview { 
+        display: block; 
+        max-width: 80%; 
+        max-height: 300px; 
+        border-radius: 10px; 
+        border: 1px solid #ccc; 
+        margin: 20px auto; 
+    }
+    .result-container { 
+        width: 100%;
+        padding: 20px; 
+        font-size: 16px; 
+        text-align: center;
+    }
+    .winner-prediction {
+        text-align: center;
+        padding: 20px;
+        margin-top: 15px;
+    }
+    .winner-prediction h3 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #ED6D4A;
+        margin: 0;
+    }
+    .winner-prediction p {
+        font-size: 1.2rem;
+        color: #555;
+        margin-top: 5px;
+    }
+    .loading {
+        color: #ED6D4A;
+        font-style: italic;
+    }
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+    .coffee-report {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: left;
+        border-left: 4px solid #8B4513;
+    }
+    .coffee-report h4 {
+        color: #8B4513;
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+    .report-section {
+        margin-bottom: 20px;
+    }
+    .report-section h5 {
+        color: #5D4037;
+        margin: 15px 0 8px 0;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    .report-section p {
+        margin: 8px 0;
+        line-height: 1.5;
+        color: #333;
+    }
+    .report-list {
+        margin: 8px 0;
+        padding-left: 20px;
+    }
+    .report-list li {
+        margin: 5px 0;
+        line-height: 1.4;
+    }
+    .analysis-results {
+        margin: 20px 0;
+        text-align: left;
+        max-width: 400px;
+        margin: 20px auto;
+    }
+    .analysis-results h4 {
+        color: #5D4037;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+</style>
+
+<div class="image-ai-container">
+    <!-- Sección de subida de imagen -->
+    <div class="upload-container">
+        <label for="imageInput">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="#888" viewBox="0 0 16 16">
+                    <path d="M4.502 11a.5.5 0 0 0 .5-.5V10h6v.5a.5.5 0 0 0 1 0V10h.5A1.5 1.5 0 0 0 14 8.5v-6A1.5 1.5 0 0 0 12.5 1h-9A1.5 1.5 0 0 0 2 2.5v6A1.5 1.5 0 0 0 3.5 10H4v.5a.5.5 0 0 0 .502.5zM3 2.5A.5.5 0 0 1 3.5 2h9a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5v-6z" />
+                    <path d="M10.648 6.646a.5.5 0 0 1 .704.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L8 8.793l2.648-2.647z" />
+                </svg>
+                <span style="margin-top: 10px;">Elige una imagen para analizar</span>
+            </div>
+        </label>
+        <input type="file" id="imageInput" accept="image/*" />
+    </div>
+
+    <!-- Previsualización de la imagen -->
+    <img id="preview" class="image-preview" src="" alt="Image preview" style="display:none;" />
+    
+    <!-- Resultados de la predicción -->
+    <div class="result-container" id="label-container">
+        <p>Selecciona una imagen para comenzar el análisis</p>
+    </div>
+</div>
+
+<!-- Carga de las librerías de Teachable Machine -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Script RCI.js cargado');
+    
+    let model, maxPredictions;
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+    const resultContainer = document.getElementById('label-container');
+
+    // URL del modelo
+    const URL = "{{ url_for('static', filename='model/') }}";
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+
+    // URL de la IA que genera el informe
+    const COFFEE_CLASSIFICATION_REPORT_URL = 'https://magicloops.dev/api/loop/f55cde9f-e4e9-4718-bc35-a9b086fdd1ff/run';
+
+    console.log('Model URL:', modelURL);
+    console.log('Metadata URL:', metadataURL);
+
+    // Cargar el modelo cuando la página se carga
+    async function init() {
+        try {
+            console.log('Cargando modelo...');
+            resultContainer.innerHTML = '<p class="loading">Cargando modelo de IA...</p>';
+            
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+            
+            console.log('Modelo cargado correctamente');
+            console.log('Clases disponibles:', maxPredictions);
+            resultContainer.innerHTML = '<p>Selecciona una imagen para analizar</p>';
+            
+        } catch (error) {
+            console.error('Error cargando el modelo:', error);
+            resultContainer.innerHTML = '<p class="error">Error cargando el modelo de IA</p>';
+        }
+    }
+
+    // seleccion de imagen
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            console.log('📁 Archivo seleccionado:', file.name, file.type);
+            
+            // Validar que sea una imagen
+            if (!file.type.match('image.*')) {
+                resultContainer.innerHTML = '<p class="error">Por favor, selecciona un archivo de imagen válido.</p>';
+                return;
+            }
+
+            // Mostrar preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                
+                // Limpiar resultados anteriores
+                resultContainer.innerHTML = '<p class="loading">Analizando imagen...</p>';
+                
+                // Analizar la imagen después de cargarla
+                setTimeout(() => {
+                    predict(preview);
+                }, 500);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Función para realizar la predicción
+    async function predict(image) {
+        if (!model) {
+            console.error(' Modelo no cargado');
+            resultContainer.innerHTML = '<p class="error">Modelo no disponible. Recarga la página.</p>';
+            return;
+        }
+
+        try {
+            console.log('🔍 Realizando predicción...');
+            
+            // Realizar la predicción
+            const predictions = await model.predict(image);
+            console.log('📊 Predicciones:', predictions);
+            
+            // Mostrar resultados
+            await displayResults(predictions);
+            
+        } catch (error) {
+            console.error('❌ Error en la predicción:', error);
+            resultContainer.innerHTML = '<p class="error">Error analizando la imagen: ' + error.message + '</p>';
+        }
+    }
+
+    // Función para obtener el informe de la otra IA
+    async function getCoffeeReport(coffeeType) {
+        try {
+            console.log('📝 Solicitando informe:', coffeeType);
+            
+            const response = await fetch(COFFEE_CLASSIFICATION_REPORT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    question: `Genera un informe específico sobre la clasificación "${coffeeType}" en el sistema keniano de clasificación de café. Explica qué significa esta clasificación, sus características principales, calidad y estándares según el sistema keniano. Proporciona la respuesta en texto plano sin usar formato markdown como ### o **.`,
+                    language: 'español'
+                })
+            });
+
+            const data = await response.json();
+            return data.response || 'Informe no disponible en este momento.';
+
+        } catch (error) {
+            console.error('Error obteniendo el informe:', error);
+            return 'Error al generar el informe. Por favor, intenta nuevamente.';
+        }
+    }
+
+    // Función para limpiar el formato markdown del texto
+    function cleanMarkdown(text) {
+        return text
+            .replace(/###\s*/g, '') // Elimina ###
+            .replace(/\*\*(.*?)\*\*/g, '$1') // Elimina **texto** pero mantiene el texto
+            .replace(/\*\s/g, '') // Elimina asteriscos de listas
+            .replace(/\-\s/g, '') // Elimina guiones de listas
+            .replace(/\n\s*\n/g, '\n\n') // Normaliza saltos de línea
+            .trim();
+    }
+
+    // Función para formatear el texto con párrafos y estructura
+    function formatReport(text) {
+        let cleanText = cleanMarkdown(text);
+        
+        // Dividir en párrafos basados en saltos de línea dobles
+        const paragraphs = cleanText.split(/\n\s*\n/).filter(p => p.trim());
+        
+        let formattedHTML = '';
+        
+        paragraphs.forEach(paragraph => {
+            const trimmed = paragraph.trim();
+            if (!trimmed) return;
+            
+            if (trimmed.length < 100 && !trimmed.endsWith('.') && !trimmed.endsWith(':')) {
+                formattedHTML += `<div class="report-section"><h5>${trimmed}</h5>`;
+            } 
+            // Si el párrafo tiene viñetas o listas
+            else if (trimmed.includes('•') || trimmed.match(/^\d+\./)) {
+                const listItems = trimmed.split(/[•\n]/).filter(item => item.trim());
+                formattedHTML += '<ul class="report-list">';
+                listItems.forEach(item => {
+                    if (item.trim()) {
+                        formattedHTML += `<li>${item.trim()}</li>`;
+                    }
+                });
+                formattedHTML += '</ul></div>';
+            }
+            else {
+                if (formattedHTML.endsWith('</h5>')) {
+                    formattedHTML += `<p>${trimmed}</p></div>`;
+                } else {
+                    formattedHTML += `<div class="report-section"><p>${trimmed}</p></div>`;
+                }
+            }
+        });
+        
+        return formattedHTML || `<div class="report-section"><p>${cleanText}</p></div>`;
+    }
+
+    // Función para mostrar los resultados
+    async function displayResults(predictions) {
+        // Ordenar predicciones por probabilidad (mayor a menor)
+        predictions.sort((a, b) => b.probability - a.probability);
+        
+        const topPrediction = predictions[0];
+        const coffeeType = topPrediction.className;
+        const confidence = (topPrediction.probability * 100).toFixed(2);
+        
+        let html = '<div class="winner-prediction">';
+        html += `<h3>${coffeeType}</h3>`;
+        html += `<p>Confianza: ${confidence}%</p>`;
+        html += '</div>';
+        
+        // Mostrar análisis de todas las predicciones 
+        html += '<div class="analysis-results">';
+        html += '<h4>Detalles del análisis:</h4>';
+        
+        predictions.forEach(pred => {
+            const percentage = (pred.probability * 100).toFixed(2);
+            const barWidth = percentage + '%';
+            
+            html += `
+                <div style="margin: 12px 0; padding: 10px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #ED6D4A;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span style="font-weight: bold;">${pred.className}</span>
+                        <span style="font-weight: bold; color: #ED6D4A;">${percentage}%</span>
+                    </div>
+                    <div style="width: 100%; background: #e9ecef; border-radius: 4px; height: 8px;">
+                        <div style="width: ${barWidth}; background: #ED6D4A; height: 8px; border-radius: 4px; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        
+        // Mostrar loading mientras se genera el informe
+        html += '<div class="coffee-report">';
+        html += '<h4>Generando informe...</h4>';
+        html += '<p class="loading">Consultando con la IA especializada...</p>';
+        html += '</div>';
+        
+        resultContainer.innerHTML = html;
+        
+        // Obtener el informe de la otra IA
+        const report = await getCoffeeReport(coffeeType);
+        
+        // Formatear el informe
+        const formattedReport = formatReport(report);
+        
+        const reportSection = document.querySelector('.coffee-report');
+        if (reportSection) {
+            reportSection.innerHTML = `
+                <h4>Informe Clasificación - ${coffeeType}</h4>
+                ${formattedReport}
+            `;
+        }
+    }
+
+    // Inicializar la aplicación
+    init();
+});
+</script>
+{% endblock body %}
