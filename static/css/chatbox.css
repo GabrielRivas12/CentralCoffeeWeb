@@ -1,0 +1,471 @@
+/* chatbox.css - Estilos corregidos con margen para sidebar */
+
+/* Fondo completo de la página - SOBREESCRIBIR BOOTSTRAP COMPLETAMENTE */
+body {
+    background-color: #ffffff !important;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Contenedor principal - asegurar que ocupe toda la pantalla */
+html, body {
+    height: 100%;
+    background-color: #ffffff !important;
+}
+
+/* Sobreescribir cualquier contenedor de Bootstrap que pueda tener fondo gris */
+.container, .container-fluid, .main-content, .content-wrapper {
+    background-color: #ffffff !important;
+    height: 100% !important;
+}
+
+/* Contenedor principal del chat - FONDO BLANCO COMPLETO CON MARGEN PARA SIDEBAR */
+.chat-container {
+    width: calc(100% - 280px); /* Restar el ancho del sidebar */
+    height: 100vh;
+    background: #ffffff !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 280px; /* Mover a la derecha para dejar espacio al sidebar */
+    right: 0;
+    bottom: 0;
+}
+
+/* Header del chat */
+.chat-container .header {
+    background-color: #ffffff !important;
+    padding: 15px 30px;
+    width: 100%;
+    border-bottom: 1px solid #e9ecef;
+    flex-shrink: 0;
+}
+
+.chat-container .header-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #343a40;
+    text-align: left;
+    margin: 0;
+}
+
+/* Contenedor del contenido del chat - FONDO BLANCO */
+.chat-container .chat-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-color: #ffffff !important;
+}
+
+.chat-container .chat-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: #ffffff !important;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.chat-container .chat-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* ========== CORRECCIONES ESPECÍFICAS PARA BOOTSTRAP ========== */
+
+/* 1. MENSAJE DEL USUARIO - COLOR #f1a89b */
+.chat-container .message.user-message {
+    background-color: #f1a89b !important;
+    color: #333 !important;
+    margin-left: auto;
+    margin-right: 0;
+    border-radius: 18px !important;
+    border-bottom-right-radius: 5px !important;
+    align-self: flex-end;
+    border: none !important;
+}
+
+/* 2. BOTÓN DE ENVIAR - COLOR #ED6D4A CON ICONOS BLANCOS (IMPORTANTE SOBREESCRIBIR BOOTSTRAP) */
+.chat-container .send-btn-centered,
+.chat-container .send-button {
+    background-color: #ED6D4A !important;
+    border: none !important;
+    color: white !important;
+    padding: 8px 12px !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+}
+
+/* SOBREESCRIBIR COMPLETAMENTE LOS ESTILOS DE BOOTSTRAP PARA BTN-PRIMARY */
+.chat-container .btn-primary {
+    background-color: #ED6D4A !important;
+    border-color: #ED6D4A !important;
+    color: white !important;
+    box-shadow: none !important;
+    background-image: none !important;
+}
+
+.chat-container .btn-primary:focus,
+.chat-container .btn-primary.focus {
+    background-color: #ED6D4A !important;
+    border-color: #ED6D4A !important;
+    color: white !important;
+    box-shadow: none !important;
+}
+
+.chat-container .btn-primary:hover {
+    background-color: #e05a38 !important;
+    border-color: #e05a38 !important;
+    color: white !important;
+    transform: scale(1.05);
+}
+
+.chat-container .btn-primary:not(:disabled):not(.disabled):active,
+.chat-container .btn-primary:not(:disabled):not(.disabled).active {
+    background-color: #d14927 !important;
+    border-color: #d14927 !important;
+    color: white !important;
+}
+
+.chat-container .send-btn-centered:hover,
+.chat-container .send-button:hover {
+    background-color: #e05a38 !important;
+    border-color: #e05a38 !important;
+    transform: scale(1.05);
+}
+
+.chat-container .send-btn-centered:disabled,
+.chat-container .send-button:disabled,
+.chat-container .btn-primary:disabled {
+    background-color: #cccccc !important;
+    border-color: #cccccc !important;
+    cursor: not-allowed;
+    transform: none;
+    color: #666 !important;
+}
+
+/* Asegurar que los íconos sean siempre blancos */
+.chat-container .send-btn-centered i,
+.chat-container .send-button i,
+.chat-container .btn-primary i {
+    color: white !important;
+}
+
+/* 3. INPUT MÁS PEQUEÑO - SOBREESCRIBIR BOOTSTRAP */
+.chat-container .centered-input-field,
+.chat-container .input-field {
+    border: none !important;
+    resize: none;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    background-color: transparent;
+    flex: 1;
+    min-height: 35px !important;
+    max-height: 80px;
+    font-family: inherit;
+    width: 100%;
+    line-height: 1.4;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.chat-container .centered-input-field:focus,
+.chat-container .input-field:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* 4. BOTÓN CLEAR - SOBREESCRIBIR BOOTSTRAP */
+.chat-container .clear-button {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+    padding: 6px !important;
+    cursor: pointer;
+    border-radius: 50% !important;
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px !important;
+    margin: 0 !important;
+    color: #6c757d !important;
+    box-shadow: none !important;
+}
+
+.chat-container .clear-button:hover {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+}
+
+/* ========== ESTILOS EXISTENTES ========== */
+
+/* Mensajes del bot */
+.chat-container .message.bot-message {
+    background-color: #f8f9fa;
+    color: #495057;
+    margin-right: auto;
+    margin-left: 10px; /* CORREGIDO: 10px en lugar de 100 */
+    border-radius: 18px !important;
+    border-bottom-left-radius: 5px !important;
+    align-self: flex-start;
+    border: 1px solid #e9ecef;
+}
+
+/* Estilos base para mensajes */
+.chat-container .message {
+    margin-bottom: 15px;
+    padding: 12px 18px;
+    border-radius: 18px;
+    max-width: 70%;
+    word-wrap: break-word;
+    animation: fadeInUp 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Input centrado - FONDO BLANCO */
+.chat-container .centered-input-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    width: 100%;
+    z-index: 10;
+}
+
+.chat-container .centered-input-container.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.chat-container .centered-input-wrapper {
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+    padding: 20px;
+    background-color: #ffffff !important;
+}
+
+.chat-container .welcome-text h4 {
+    color: #5D7285;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.chat-container .welcome-text p {
+    color: #7a8a9a;
+    margin-bottom: 30px;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Grupo de input centrado - SOBREESCRIBIR BOOTSTRAP */
+.chat-container .centered-input-group {
+    display: flex;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 25px !important;
+    overflow: hidden;
+    border: 1px solid #e9ecef !important;
+    background-color: white;
+    align-items: center;
+    width: 100%;
+    padding: 4px !important;
+}
+
+.chat-container .centered-input-group:focus-within {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Input normal en la parte inferior - CORREGIDO MARGEN IZQUIERDO */
+.chat-container .input-container {
+    display: flex;
+    padding: 10px 15px !important;
+    background-color: #ffffff !important;
+    border-top: 1px solid #e9ecef;
+    align-items: center;
+    border: 1px solid #e9ecef;
+    border-radius: 25px;
+    margin: 10px 20px 10px 30px; /* Añadido 30px a la izquierda */
+    background-color: white;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+    gap: 8px;
+    width: calc(100% - 50px); /* Ajustado de 40px a 50px */
+    position: relative;
+    z-index: 5;
+    flex-shrink: 0;
+}
+
+/* Placeholders */
+.chat-container .centered-input-field::placeholder,
+.chat-container .input-field::placeholder {
+    color: #6c757d;
+}
+
+/* Indicador de escritura */
+.chat-container .typing-indicator {
+    background: #f8f9fa;
+    color: #495057;
+    align-self: flex-start;
+    padding: 12px 18px;
+    margin-bottom: 15px;
+    max-width: 70%;
+    border-radius: 18px;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #e9ecef;
+}
+
+.chat-container .typing-dots {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.chat-container .typing-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #6c757d;
+    opacity: 0.6;
+    animation: typingAnimation 1.4s infinite ease-in-out;
+}
+
+.chat-container .typing-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.chat-container .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.chat-container .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingAnimation {
+    0%, 60%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+}
+
+/* Asegurar que todo fuera del chat sea blanco */
+html, body, #chatContentWrapper, .chat-content-wrapper {
+    background-color: #ffffff !important;
+}
+
+/* Remover cualquier padding/margin del contenedor base */
+#base-admin-container, .admin-container, .main-container {
+    background-color: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100vh !important;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 991.98px) {
+    /* En móviles y tablets, el chat ocupa toda la pantalla */
+    .chat-container {
+        width: 100% !important;
+        left: 0 !important;
+    }
+    
+    .chat-container .header {
+        padding: 15px 20px;
+    }
+    
+    .chat-container .input-container {
+        margin: 10px;
+        width: calc(100% - 20px);
+        padding: 8px 12px !important;
+        gap: 6px;
+    }
+    
+    .chat-container .message {
+        max-width: 85%;
+    }
+    
+    .chat-container .centered-input-wrapper {
+        width: 95%;
+        padding: 10px;
+    }
+    
+    .chat-container .centered-input-field,
+    .chat-container .input-field {
+        padding: 6px 10px !important;
+        font-size: 13px !important;
+        min-height: 32px !important;
+    }
+    
+    .chat-container .send-btn-centered,
+    .chat-container .send-button {
+        width: 36px !important;
+        height: 36px !important;
+        padding: 6px !important;
+    }
+    
+    .chat-container .clear-button {
+        width: 32px !important;
+        height: 32px !important;
+        padding: 5px !important;
+    }
+    
+    /* Asegurar fondo blanco en móviles */
+    body {
+        background-color: #ffffff !important;
+    }
+}
+
+@media (min-width: 992px) {
+    /* En desktop, el chat respeta el espacio del sidebar (280px) */
+    .chat-container {
+        width: calc(100% - 280px) !important;
+        left: 280px !important;
+    }
+}

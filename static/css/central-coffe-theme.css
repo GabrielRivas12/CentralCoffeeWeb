@@ -1,0 +1,561 @@
+/* Estilos para superponer la imagen de perfil sobre la de portada */
+#Images {
+  position: relative;
+  margin-bottom: 80px;
+  /* Ajusta este valor según el tamaño de tu imagen de perfil */
+}
+
+.profileImage {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid white;
+  position: absolute;
+  top: 225px !important;
+  left: 20px;
+}
+
+.profileCover {
+  width: 100%;
+  height: 300px;
+  /* Altura de la imagen de portada */
+  object-fit: cover;
+}
+
+/* BaseAdmin Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+}
+
+.container-main {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* Sidebar para DESKTOP */
+.sidebar-desktop {
+  position: fixed;
+  height: 100vh;
+  z-index: 1030;
+  width: 300px;
+  background-color: #f1a89b;
+  color: #212529;
+  flex-shrink: 0;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+
+.sidebar-desktop .logo,
+.offcanvas .logo {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #212529;
+}
+
+.sidebar-desktop .menu a,
+.offcanvas .menu a {
+  display: flex;
+  align-items: center;
+  color: #212529;
+  text-decoration: none;
+  padding: 12px 20px;
+  transition: background 0.3s;
+}
+
+.sidebar-desktop .menu a i,
+.offcanvas .menu a i {
+  margin-right: 12px;
+  font-size: 18px;
+  color: #212529;
+}
+
+.sidebar-desktop .menu a:hover,
+.offcanvas .menu a:hover {
+  background-color: #e9ecef;
+}
+
+.sidebar-desktop .bottom,
+.offcanvas .bottom {
+  padding: 20px;
+}
+
+.offcanvas-start {
+  background-color: #f1a89b;
+  color: #212529;
+}
+
+.offcanvas-title {
+  color: #212529;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+  margin-left: 300px;
+}
+
+@media (max-width: 991.98px) {
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+.full-screen .main-content {
+  flex-grow: 1;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  background-color: #f8f9fa;
+  margin-left: 0;
+}
+
+.logout-button {
+  margin-top: 10px;
+  display: block;
+  background: #667A8A;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  color: #e9ecef;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #dee2e6;
+  color: #212529;
+}
+
+/* Navbar Móvil */
+.navbar.bg-dark {
+  background-color: #f1a89b !important;
+}
+
+.navbar .logo.text-white {
+  color: #212529 !important;
+}
+
+.navbar-dark .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+.map-header {
+  background: #f1a89b !important;
+  color: #212529 !important;
+}
+
+.map-header .map-controls button {
+  background: #667A8A !important;
+  color: #e9ecef !important;
+}
+
+.map-header h1,
+.map-header h1 i {
+  color: #212529 !important;
+}
+
+.map-header .map-controls button i {
+  color: white !important;
+}
+
+/* === Mapa Interactivo === */
+.map-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#map {
+  flex-grow: 1;
+}
+
+/* Custom button styles to invert colors */
+.btn-success,
+.btn-primary,
+.btn-danger,
+.btn-warning {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.btn-success .fas {
+  color: #28a745;
+}
+
+.btn-primary .fas {
+  color: #007bff;
+}
+
+.btn-danger .fas {
+  color: #dc3545;
+}
+
+.btn-warning .fas {
+  color: #fd7e14;
+}
+
+.btn-create-offer {
+  background-color: #007bff;
+  border-color: #007bff !important;
+  color: white !important;
+}
+
+.btn-edit {
+  background-color: #ffc107;
+  border-color: #ffc107 !important;
+  color: white !important;
+}
+
+.btn-edit:hover {
+  background-color: #e0a800;
+  border-color: #e0a800 !important;
+  color: white !important;
+}
+
+.btn-more-info {
+  background-color: #28a745;
+  border-color: #28a745 !important;
+  color: white !important;
+}
+
+.btn-more-info:hover {
+  background-color: #0056b3;
+  border-color: #0056b3 !important;
+  color: white !important;
+}
+
+.btn-cancelar {
+  background-color: #dc3545;
+  border-color: #dc3545 !important;
+  color: white !important;
+}
+
+.btn-cancelar:hover {
+  background-color: #a71d2a;
+  border-color: #a71d2a !important;
+  color: white !important;
+}
+
+.btn-save {
+  background-color: #28a745;
+  border-color: #28a745 !important;
+  color: white !important;
+}
+
+.btn-save:hover {
+  background-color: #1e7e34;
+  border-color: #1e7e34 !important;
+  color: white !important;
+}
+
+.card-offer-header {
+  background-color: #8b4513;
+  color: white;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+/* ===== ESTILOS RESPONSIVE PARA PERFIL ===== */
+
+/* Contenedor de imágenes */
+#Images {
+  position: relative;
+  margin-bottom: 0;
+}
+
+/* Imagen de portada */
+.profile-cover-img {
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Imagen de perfil */
+.profile-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 5px solid white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  bottom: -75px;
+  left: 50px;
+  z-index: 10;
+}
+
+/* Header de ofertas en tarjetas */
+.card-offer-header {
+  background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+  color: white;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Tarjetas de productos */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.product-image {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Botones personalizados */
+.btn-edit {
+  background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.btn-edit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+  color: white;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.btn-chat {
+  background-color: #0056b3;
+  color: white !important;
+}
+
+.btn-chat:hover {
+  background-color: #f1a89b;
+  color: white !important;
+}
+
+.btn-save:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+  color: white;
+}
+
+/* Grupo de botones en tarjetas */
+.btn-group .btn {
+  border-radius: 6px;
+  margin: 0 2px;
+  padding: 0.4rem 0.6rem;
+  transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+  transform: scale(1.1);
+}
+
+/* ===== MEDIA QUERIES ===== */
+
+/* Tablets */
+@media (max-width: 991.98px) {
+  .profile-cover-img {
+    height: 250px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+    bottom: -60px;
+    left: 30px;
+  }
+
+  #ProfileContent {
+    margin-top: 4rem;
+    padding-top: 2rem;
+  }
+
+  .product-image {
+    height: 180px;
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 767.98px) {
+  .profile-cover-img {
+    height: 200px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  #ProfileContent {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+  }
+
+  .card-offer-header {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .product-image {
+    height: 160px;
+  }
+
+  .btn-group .btn {
+    padding: 0.3rem 0.5rem;
+    margin: 0 1px;
+  }
+
+  .btn-edit {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 575.98px) {
+  .profile-cover-img {
+    height: 180px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+    bottom: -40px;
+    border-width: 3px;
+  }
+
+  #ProfileContent {
+    margin-top: 2.5rem;
+  }
+
+  .product-image {
+    height: 140px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .btn-group {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .btn-group .btn {
+    flex: 1;
+    min-width: 45px;
+    margin: 0.1rem;
+  }
+}
+
+/* Pantallas muy grandes */
+@media (min-width: 1400px) {
+  .profile-cover-img {
+    height: 350px;
+  }
+
+  .profile-img {
+    width: 180px;
+    height: 180px;
+    bottom: -90px;
+    left: 80px;
+  }
+
+  #ProfileContent {
+    margin-top: 6rem;
+  }
+}
+
+.profile-img {
+  border-color: #f8f9fa;
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+
+  .card,
+  .btn,
+  .profile-img,
+  .product-image {
+    transition: none;
+  }
+}
+
+/* Mejora para alta densidad de píxeles */
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+
+  .profile-img,
+  .product-image {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  /* Make it fill the main-content area */
+}
+
+#ProfileInfo {
+  flex-grow: 1;
+  /* Make the main info section grow, pushing the button down */
+}
+
+.btn-success {
+  background-color: #0056b3;
+  color: white;
+}

@@ -1,0 +1,268 @@
+{% extends "base/BaseAdmin.html" %}
+
+{% block body %}
+
+<body>
+    <div class="inbox-container" id="inboxContainer">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">Bandeja de Entrada</div>
+        </div>
+
+        <!-- Lista de chats -->
+        <div class="chats-list" id="chatsList">
+            {% if chats %}
+            {% for chat in chats %}
+            <div class="chat-item" onclick="abrirChat('{{ chat.chat_id }}', '{{ chat.otro_usuario.nombre }}')">
+                {% if chat.otro_usuario.foto_perfil and chat.otro_usuario.foto_perfil != 'default_avatar.png' %}
+                    <img src="{{ chat.otro_usuario.foto_perfil }}" alt="{{ chat.otro_usuario.nombre }}" class="avatar">
+                {# Si no hay foto, mostramos el avatar con la inicial #}
+                {% else %}
+                    <div class="avatar-placeholder">
+                        <span class="avatar-letter">{{ chat.otro_usuario.nombre[0] | upper }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="chat-content">
+                    <div class="header-row">
+                        <div class="chat-title">{{ chat.otro_usuario.nombre }}</div>
+                        <div class="chat-date" data-timestamp="{{ chat.timestamp.isoformat() if chat.timestamp else '' }}">
+                            {{ chat.fecha_ultimo_mensaje }}
+                        </div>
+                    </div>
+                    <div class="chat-message">
+                        {{ chat.ultimo_mensaje or 'No hay mensajes aún' }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                No tienes chats activos
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        :root {
+            --primary-bg: #fff;
+            --secondary-bg: #f7f7f7;
+            --primary-text: #000;
+            --secondary-text: #666;
+            --border-color: #e0e0e0;
+            --hover-bg: rgba(0, 0, 0, 0.05);
+            --avatar-bg: #b55034;
+            --header-title-color: #5D7285;
+        }
+
+        .dark-mode {
+            --primary-bg: #000;
+            --secondary-bg: #1a1a1a;
+            --primary-text: #fff;
+            --secondary-text: #ccc;
+            --border-color: #333;
+            --hover-bg: rgba(255, 255, 255, 0.05);
+            --header-title-color: #fff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--secondary-bg);
+        }
+
+        .inbox-container {
+            width: 100%;
+            height: 100%; 
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--header-title-color);
+        }
+
+        .chats-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .chat-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .chat-item:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            margin-right: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .avatar-placeholder {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background-color: var(--avatar-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .avatar-letter {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .chat-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0; 
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .chat-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary-text);
+        }
+
+        .chat-date {
+            font-size: 12px;
+            color: var(--secondary-text);
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .chat-message {
+            font-size: 14px;
+            color: var(--secondary-text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--secondary-text);
+            padding: 20px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .inbox-container {
+                border-left: none;
+                border-right: none;
+                max-width: 100%;
+            }
+            .chat-item {
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <script>
+        function abrirChat(chatId, nombreUsuario) {
+            // Redirigir a la página del chat
+            window.location.href = `/chat/${chatId}`;
+        }
+
+        function mostrarModalChat(chatId, nombreUsuario) {
+            alert(`Abriendo chat con: ${nombreUsuario} (ID: ${chatId})`);
+        }
+
+        document.querySelector('.header').addEventListener('dblclick', function () {
+            document.getElementById('inboxContainer').classList.toggle('dark-mode');
+        });
+
+        // Función para formatear fechas en tiempo real
+        function formatearFechas() {
+            const elementosFecha = document.querySelectorAll('.chat-date[data-timestamp]');
+            const ahora = new Date();
+            const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+            
+            elementosFecha.forEach(elemento => {
+                const timestamp = elemento.getAttribute('data-timestamp');
+                if (!timestamp) return;
+                
+                try {
+                    const fecha = new Date(timestamp);
+                    
+                    // Si es hoy, mostrar hora
+                    if (fecha >= hoy) {
+                        elemento.textContent = fecha.toLocaleTimeString('es-ES', { 
+                            hour: '2-digit', 
+                            minute: '2-digit' 
+                        });
+                    } 
+                    // Si es de esta semana, mostrar día de la semana
+                    else if (fecha >= new Date(hoy - 6 * 24 * 60 * 60 * 1000)) {
+                        elemento.textContent = fecha.toLocaleDateString('es-ES', { 
+                            weekday: 'short' 
+                        });
+                    }
+                    // Si es de este año, mostrar fecha sin año
+                    else if (fecha.getFullYear() === ahora.getFullYear()) {
+                        elemento.textContent = fecha.toLocaleDateString('es-ES', { 
+                            day: '2-digit', 
+                            month: '2-digit' 
+                        });
+                    }
+                    // Si es de otro año, mostrar fecha completa
+                    else {
+                        elemento.textContent = fecha.toLocaleDateString('es-ES', { 
+                            day: '2-digit', 
+                            month: '2-digit', 
+                            year: '2-digit' 
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error formateando fecha:', error);
+                }
+            });
+        }
+
+        // Ejecutar cuando se cargue la página
+        document.addEventListener('DOMContentLoaded', function() {
+            formatearFechas();
+        });
+    </script>
+</body>
+{% endblock %}
